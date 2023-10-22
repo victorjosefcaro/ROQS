@@ -1,0 +1,96 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Apply a modern background with a moving gradient */
+body {
+    background: linear-gradient(45deg, #F7F0F5, #DECBB7, #8F857D, #5C5552, #433633);
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s linear infinite;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+/* Center the content vertically and horizontally */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Style the logo */
+.logo {
+    max-width: 30%; /* Set the maximum width as a percentage */
+    max-height: 30vh; /* Set the maximum height as a percentage of the viewport height */
+    height: auto; /* Allow the height to adjust based on the aspect ratio */
+    margin-bottom: 10px;
+}
+
+/* Style the "Get Started" button */
+.btn {
+    background-color: #333;
+    color: #fff;
+    padding: 0.7rem 1.5rem; /* Adjust the padding to make the button a bit bigger */
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5rem; /* Increase the font size for a bigger button */
+    margin: 1.5rem 1rem; /* Add space around the button */
+    transition: background-color 0.3s, transform 0.2s;
+    max-width: 200px; /* Limit the maximum width of the button */
+    display: block; /* Make the button a block element to limit its width */
+    margin: 0 auto; /* Center the button horizontally */
+}
+
+
+/* Add hover effect */
+.btn:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+/* Style the button on mobile view */
+@media (max-width: 768px) {
+    .btn {
+        padding: 0.7rem 1.5rem; 
+        font-size: 1.5rem;
+    }
+    /* Set a specific max-width for the logo on mobile view */
+    .logo {
+        max-width: 60%; /* Adjust this value as needed */
+    }
+}
+
+/* Gradient animation for the background */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
+/* Style the copyright notice */
+.copyright {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+/* Add space between the button and copyright */
+.spacer {
+    height: 2rem; /* Adjust the height as needed for the desired spacing */
+}
+
