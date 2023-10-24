@@ -1,3 +1,4 @@
+
 /* Reset some default browser styles */
 * {
     margin: 0;
@@ -49,7 +50,6 @@ body {
 
 /* Order items styles */
 .order-items {
-    padding: 3rem 0;
     text-align: center;
 }
 
@@ -60,7 +60,6 @@ body {
 /* Search bar styles */
 .search-bar {
     text-align: center;
-    padding: 2rem 0;
 }
 
 #food-search {
@@ -71,7 +70,6 @@ body {
 
 /* Food categories styles */
 .food-categories {
-    padding: 3rem 0;
     text-align: center;
 }
 
