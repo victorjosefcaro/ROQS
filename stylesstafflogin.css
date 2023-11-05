@@ -1,0 +1,99 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Apply the same modern background with a moving gradient */
+body {
+    background: linear-gradient(45deg, #F7F0F5, #DECBB7, #8F857D, #5C5552, #433633);
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s linear infinite;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+/* Define container styles */
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Logo styles */
+.logo {
+    max-width: 30%;
+    max-height: 30vh;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Header styles */
+h1 {
+    margin-top: 20px;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+}
+
+label {
+    text-align: left;
+    margin: 0.5rem 0;
+}
+
+input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0.3rem 0;
+    font-size: 1rem;
+}
+
+/* Button styles */
+.btn {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+/* Gradient animation for the background */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
+/* Copyright notice styles */
+.copyright {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}

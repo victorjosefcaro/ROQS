@@ -1,0 +1,109 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Apply a modern background with a moving gradient */
+body {
+    background: linear-gradient(45deg, #F7F0F5, #DECBB7, #8F857D, #5C5552, #433633);
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s linear infinite;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+/* Center the content vertically and horizontally */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Style the logo */
+.logo {
+    max-width: 10%;
+    height: auto;
+    margin: 10px;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* Navigation menu styles */
+.menu {
+    background-color: #333;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.menu ul {
+    list-style: none;
+}
+
+.menu ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.menu ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Gradient animation for the background */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
+/* Style the copyright notice */
+.copyright {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* Media Query for Mobile View */
+@media (max-width: 768px) {
+    .container {
+        align-items: flex-start;
+    }
+
+    .logo {
+        max-width: 40%;
+    }
+
+    .menu ul {
+        text-align: left;
+    }
+
+    .menu ul li {
+        display: block;
+        margin: 10px 0;
+    }
+}
