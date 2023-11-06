@@ -58,6 +58,12 @@ body {
   flex-direction: column;
 }
 
+.btn-group {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+}
+
+
 /* Order items styles */
 .order-items {
   text-align: center;
