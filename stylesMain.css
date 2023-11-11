@@ -1,3 +1,4 @@
+
 /* Reset some default browser styles */
 * {
   margin: 0;
@@ -7,17 +8,10 @@
 
 /* Apply a modern background with a moving gradient */
 body {
-  background: linear-gradient(
-    45deg,
-    #f7f0f5,
-    #decbb7,
-    #8f857d,
-    #5c5552,
-    #433633
-  );
+  background: linear-gradient(45deg, #F7F0F5, #DECBB7, #8F857D, #5C5552, #433633);
   background-size: 400% 400%;
   animation: gradientAnimation 20s linear infinite;
-  font-family: "Catamaran", sans-serif;
+  font-family: Arial, sans-serif;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -30,8 +24,6 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Header styles */
@@ -39,8 +31,6 @@ body {
   background-color: #333;
   color: #fff;
   text-align: center;
-  font-family: "Catamaran", sans-serif;
-  font-size: 4rem;
   padding: 1rem 0;
 }
 
@@ -57,12 +47,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-.btn-group {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-}
-
 
 /* Order items styles */
 .order-items {
@@ -104,9 +88,9 @@ body {
 /* Gradient animation for the background */
 @keyframes gradientAnimation {
   0% {
-    background-position: 100% 0%;
+      background-position: 100% 0%;
   }
   100% {
-    background-position: 0% 100%;
+      background-position: 0% 100%;
   }
 }
