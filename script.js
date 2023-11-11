@@ -125,3 +125,113 @@ closeModalButton.addEventListener("click", function () {
   amountInput.value = 1;
   itemRequests.value = "";
 });
+
+// Create an array to store items in the cart
+let cart = [];
+
+// Function to add an item to the cart
+function addToCart(itemName, itemDescription, itemPrice, quantity, totalPrice, requests) {
+  const cartItem = {
+    name: itemName,
+    description: itemDescription,
+    price: itemPrice,
+    quantity: quantity,
+    total: totalPrice,
+    requests: requests,
+  };
+  cart.push(cartItem);
+}
+
+// Function to display items in the cart
+function displayCart() {
+  const offcanvasBody = document.querySelector('.offcanvas-body');
+  offcanvasBody.innerHTML = ''; // Clear the existing content
+
+  // Loop through the items in the cart and create card elements
+  cart.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.marginBottom = '10px';
+
+    const cardHeader = document.createElement('h5');
+    cardHeader.classList.add('card-header');
+    cardHeader.textContent = item.name;
+
+    const container = document.createElement('div');
+    container.classList.add('container');
+
+    const row = document.createElement('div');
+    row.classList.add('row');
+
+    const col1 = document.createElement('div');
+    col1.classList.add('col');
+    const img = document.createElement('img');
+    img.src = "salad.png"; // Replace with the actual image source
+    img.classList.add('card-img');
+    col1.appendChild(img);
+
+    const col2 = document.createElement('div');
+    col2.classList.add('col');
+    const amountText = document.createElement('p');
+    amountText.classList.add('card-text');
+    amountText.textContent = `Amount: ${item.quantity}`;
+    const priceText = document.createElement('p');
+    priceText.classList.add('card-text');
+    priceText.textContent = `Price: ${currency}${item.price}`;
+    const totalPriceText = document.createElement('p');
+    totalPriceText.classList.add('card-text');
+    totalPriceText.textContent = `Total Price: ${currency}${item.total}`;
+    col2.appendChild(amountText);
+    col2.appendChild(priceText);
+    col2.appendChild(totalPriceText);
+
+    row.appendChild(col1);
+    row.appendChild(col2);
+    container.appendChild(row);
+
+    const btnGroup = document.createElement('div');
+    btnGroup.classList.add('btn-group', 'd-flex');
+    const modifyButton = document.createElement('button');
+    modifyButton.type = 'button';
+    modifyButton.classList.add('btn', 'btn-dark', 'm-2', 'rounded');
+    modifyButton.textContent = 'Modify';
+    // Add event listener or onclick function for modifyButton
+
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.classList.add('btn', 'btn-danger', 'm-2', 'rounded');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => {
+      // Remove the item from the cart
+      cart.splice(index, 1);
+      // Update the display
+      displayCart();
+    });
+
+    btnGroup.appendChild(modifyButton);
+    btnGroup.appendChild(deleteButton);
+
+    card.appendChild(cardHeader);
+    card.appendChild(container);
+    card.appendChild(btnGroup);
+
+    offcanvasBody.appendChild(card);
+  });
+}
+
+// Function to handle the "Place Order" button click
+function placeOrder() {
+  const itemName = document.getElementById("modalItemName").textContent;
+  const itemDescription = document.getElementById("modalItemDescription").textContent;
+  const itemPrice = parseInt(document.getElementById("modalItemPrice").textContent);
+  const quantity = parseInt(document.getElementById("amountInput").value);
+  const totalPrice = parseInt(document.getElementById("modalItemTotalPrice").textContent);
+  const requests = document.getElementById("itemRequests").value;
+
+  addToCart(itemName, itemDescription, itemPrice, quantity, totalPrice, requests);
+  displayCart();
+}
+
+// Add an event listener to the "Place Order" button
+const placeOrderButton = document.getElementById("placeOrderButton");
+placeOrderButton.addEventListener("click", placeOrder);

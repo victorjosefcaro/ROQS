@@ -30,6 +30,9 @@
             id="food-search"
             placeholder="Search for food..."
           />
+          <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button>
         </div>
       </section>
       <section class="food-categories">
@@ -286,30 +289,21 @@
               >
                 Close
               </button>
-              <button type="button" class="btn btn-primary">Place Order</button>
+              <button type="button" class="btn btn-primary" id="placeOrderButton">Place Order</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Nav Bar -->
-      <ul class="nav justify-content-center">
-        <li class="nav-item">
-          <a
-            class="nav-link active bg-light text-dark rounded m-3"
-            aria-current="page"
-            href="main.html"
-            >Home</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link bg-light text-dark rounded m-3" href="cart.html"
-            >Link</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link bg-light text-dark rounded m-3" href="#">Link</a>
-        </li>
       </ul>
+      <!-- Cart -->
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="cart">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title mx-auto">Your Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+        </div>
+      </div>
     </main>
     <footer class="footer">
       <div class="container">
