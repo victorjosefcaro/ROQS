@@ -1,4 +1,3 @@
-
 /* Reset some default browser styles */
 * {
   margin: 0;
@@ -8,9 +7,8 @@
 
 /* Apply a modern background with a moving gradient */
 body {
-  background: linear-gradient(45deg, #F7F0F5, #DECBB7, #8F857D, #5C5552, #433633);
+  background: #decbb7;
   background-size: 400% 400%;
-  animation: gradientAnimation 20s linear infinite;
   font-family: Arial, sans-serif;
   text-align: center;
   display: flex;
@@ -88,9 +86,9 @@ body {
 /* Gradient animation for the background */
 @keyframes gradientAnimation {
   0% {
-      background-position: 100% 0%;
+    background-position: 100% 0%;
   }
   100% {
-      background-position: 0% 100%;
+    background-position: 0% 100%;
   }
 }
