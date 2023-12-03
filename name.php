@@ -23,7 +23,7 @@
       </div>
 
       <div>
-        <a href="main.html" class="btn">PROCEED</a>
+        <a href="main.php" class="btn">PROCEED</a>
       </div>
     </div>
 

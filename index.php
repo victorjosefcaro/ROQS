@@ -10,7 +10,7 @@
     <div class="container">
       <img src="logo1.png" alt="ROQS Logo" class="logo" />
     </div>
-    <a href="name.html" class="btn">Get Started</a>
+    <a href="name.php" class="btn">Get Started</a>
     <!-- Add the spacer with the .spacer class -->
     <div class="spacer"></div>
     <footer class="copyright">
