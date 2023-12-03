@@ -12,20 +12,22 @@
     <title>ROQS - Restaurant Ordering and Queuing System</title>
   </head>
   <body>
-    <div class="container">
-      <div class="name1">
-        <text class="yourName">Your Name</text>
-        <section class="search-bar">
-          <div class="container">
-            <input type="text" id="cName" placeholder="Type your name" />
-          </div>
-        </section>
-      </div>
+    <form  id="reservation-form">
+      <div class="container">
+        <h1 class="name1">Table Reservation</h1>
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" autocomplete="name" placeholder="Type your name">
+        </div>
 
-      <div>
-        <a href="main.php" class="btn">PROCEED</a>
+        <div class="form-group">
+          <label for="party-size">Party Size:</label>
+          <input type="number" value="2" id="party-size" required>
+        </div>
+
       </div>
-    </div>
+        <button class="btn" type="submit" id="add-customer-button">Queue</button>
+    </form>
 
     <!-- Add the spacer with the .spacer class -->
     <div class="spacer"></div>
@@ -33,5 +35,6 @@
       &copy; 2023 ROQS - Restaurant Ordering and Queuing System. All rights
       reserved.
     </footer>
+    <script src="script1.js"></script>
   </body>
 </html>
