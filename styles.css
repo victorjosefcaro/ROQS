@@ -28,8 +28,19 @@ body {
   padding: 1rem;
 }
 
+.container label {
+  margin: 1rem;
+}
+
+.container input {
+  width: 30%;
+  height: 2rem;
+  text-align: center;
+}
+
 .name1 {
-  padding-bottom: 10rem;
+  margin-top: 5rem;
+  padding-bottom: 5rem;
 }
 
 .yourName {
