@@ -13,20 +13,18 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch reservations from the database
-$sql = "SELECT id, name, party_size FROM reservation"; // Include the 'id' column
+// Assuming you pass customer ID as a parameter named 'customer_id'
+$customerId = $_GET['customer_id'];
+
+// Delete the served customer
+$sql = "DELETE FROM reservation WHERE id = $customerId";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    // Output data as JSON
-    $reservations = array();
-    while ($row = $result->fetch_assoc()) {
-        $reservations[] = $row;
-    }
-    echo json_encode($reservations);
+// Return a response (e.g., success or error)
+if ($result) {
+    echo json_encode(['status' => 'success']);
 } else {
-    // No reservations found
-    echo json_encode(array());
+    echo json_encode(['status' => 'error']);
 }
 
 // Close the database connection

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const reservationForm = document.getElementById("reservation-form");
   const tablesContainer = document.querySelector(".tables");
-  const customerQueue = [];
+  let customerQueue = [];
   const queueCountElement = document.getElementById("queue-count");
   const customerQueueElement = document.getElementById("customer-queue");
   const serveCustomerButton = document.getElementById("serve-customer-button");
@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Update the display
         updateTableStatus();
         updateQueueDisplay();
+
+        // Delete the served customer from the database
+        deleteServedCustomer(servedCustomer.id); // Add this function call
       } else {
         // Error handling: No suitable table found
         alert("No suitable table found for the customer's party size.");
@@ -40,6 +43,22 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  function deleteServedCustomer(customerId) {
+    // Make an AJAX request to delete the served customer
+    fetch(`delete_customer.php?customer_id=${customerId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          console.log("Served customer deleted successfully.");
+        } else {
+          console.error("Error deleting served customer.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting served customer:", error);
+      });
+  }
 
   function updateQueueDisplay() {
     // Update the number of customers in the queue
@@ -74,9 +93,10 @@ document.addEventListener("DOMContentLoaded", function () {
       body: formData,
     })
       .then(handleResponse)
-      .then(() => {
+      .then((data) => {
         // Assuming the reservation was successful, update the local queue
         const customer = {
+          id: data.id, // Use the actual property from your response
           name: formData.get("name"),
           partySize: parseInt(formData.get("party-size")),
         };
@@ -95,13 +115,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fetch existing reservations from the server
   function fetchExistingReservations() {
     console.log("Fetching reservations...");
-    fetch("fetch_reservation.php")
+    fetch("fetch_reservations.php")
       .then((response) => response.json())
       .then((data) => {
         console.log("Received data:", data);
         // Assuming data is an array of reservations
         data.forEach((reservation) => {
           customerQueue.push({
+            id: reservation.id, // Use the actual property from your response
             name: reservation.name,
             partySize: reservation.party_size,
           });
@@ -117,6 +138,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fetch existing reservations when the page loads
   fetchExistingReservations();
+
+  // Refresh data every 5 seconds (adjust the interval as needed)
+  setInterval(refreshData, 5000);
+
+  // Function to fetch reservations and update the queue
+  function refreshData() {
+    fetch("fetch_reservations.php")
+      .then((response) => response.json())
+      .then((data) => {
+        // Clear existing data in customerQueue
+        customerQueue = [];
+
+        // Assuming data is an array of reservations
+        data.forEach((reservation) => {
+          customerQueue.push({
+            id: reservation.id, // Use the actual property from your response
+            name: reservation.name,
+            partySize: reservation.party_size,
+          });
+        });
+
+        // Update the display
+        updateQueueDisplay();
+      })
+      .catch((error) => {
+        console.error("Error fetching reservations:", error);
+      });
+  }
 
   function handleResponse(response) {
     if (!response.ok) {
@@ -206,28 +255,31 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("new-table-seats").value = "";
     });
 
-  makeAvailableButton.addEventListener("click", function () {
-    // Make the selected table available
-    const tableIdToMakeAvailable = parseInt(
-      prompt("Enter the table number to make available:")
-    );
-
-    const table = tables.find((table) => table.id === tableIdToMakeAvailable);
-
-    if (table) {
-      table.status = "available";
-
-      // Clear the table assignment for the customer who occupied it
-      const customer = customerQueue.find(
-        (customer) => customer.table === tableIdToMakeAvailable
+  // Check if the "makeAvailableButton" is defined before adding the event listener
+  if (makeAvailableButton) {
+    makeAvailableButton.addEventListener("click", function () {
+      // Make the selected table available
+      const tableIdToMakeAvailable = parseInt(
+        prompt("Enter the table number to make available:")
       );
-      if (customer) {
-        customer.table = null;
-      }
-    }
 
-    // Update the display
-    updateTableStatus();
-    updateQueueDisplay();
-  });
+      const table = tables.find((table) => table.id === tableIdToMakeAvailable);
+
+      if (table) {
+        table.status = "available";
+
+        // Clear the table assignment for the customer who occupied it
+        const customer = customerQueue.find(
+          (customer) => customer.table === tableIdToMakeAvailable
+        );
+        if (customer) {
+          customer.table = null;
+        }
+      }
+
+      // Update the display
+      updateTableStatus();
+      updateQueueDisplay();
+    });
+  }
 });
