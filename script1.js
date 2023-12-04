@@ -57,6 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
   reservationForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
+    // Validate form input
+    const nameInput = document.getElementById("name");
+    const partySizeInput = document.getElementById("party-size");
+
+    if (!nameInput.value || isNaN(parseInt(partySizeInput.value))) {
+      alert("Please provide valid input.");
+      return;
+    }
+
     const formData = new FormData(reservationForm);
 
     // Use AJAX to submit the form data
@@ -64,11 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
       method: "POST",
       body: formData,
     })
-      .then((response) => response.text())
-      .then((data) => {
-        // Handle the response (optional)
-        console.log(data);
-
+      .then(handleResponse)
+      .then(() => {
         // Assuming the reservation was successful, update the local queue
         const customer = {
           name: formData.get("name"),
@@ -77,16 +83,26 @@ document.addEventListener("DOMContentLoaded", function () {
         customerQueue.push(customer);
 
         // Clear the reservation form
-        document.getElementById("name").value = "";
-        document.getElementById("party-size").value = 2; // Reset party size
+        nameInput.value = "";
+        partySizeInput.value = 2; // Reset party size
 
         // Update the display
         updateQueueDisplay();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch(handleError);
   });
+
+  function handleResponse(response) {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.text();
+  }
+
+  function handleError(error) {
+    console.error("Error:", error);
+    alert("An error occurred. Please try again.");
+  }
 
   function findAvailableTable(partySize) {
     return tables.find(
