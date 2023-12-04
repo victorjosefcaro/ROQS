@@ -92,6 +92,32 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(handleError);
   });
 
+  // Fetch existing reservations from the server
+  function fetchExistingReservations() {
+    console.log("Fetching reservations...");
+    fetch("fetch_reservation.php")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Received data:", data);
+        // Assuming data is an array of reservations
+        data.forEach((reservation) => {
+          customerQueue.push({
+            name: reservation.name,
+            partySize: reservation.party_size,
+          });
+        });
+
+        // Update the display
+        updateQueueDisplay();
+      })
+      .catch((error) => {
+        console.error("Error fetching reservations:", error);
+      });
+  }
+
+  // Fetch existing reservations when the page loads
+  fetchExistingReservations();
+
   function handleResponse(response) {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
