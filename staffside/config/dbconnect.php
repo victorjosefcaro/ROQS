@@ -3,8 +3,9 @@
 $server = "localhost";
 $user = "root";
 $password = "";
-$db = "swiss_collection";
+$db = "roqsmain";
 
+//  from swiss_collection to new database roqsmain 
 $conn = mysqli_connect($server,$user,$password,$db);
 
 if(!$conn) {
