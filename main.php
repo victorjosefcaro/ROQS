@@ -93,13 +93,13 @@
                         <h1 class="modal-title pt-2" id="modalItemName"></h1>
                         <div class="input-group px-4 py-2 w-50 mx-auto">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger btn-number">
+                                <button type="button" class="btn btn-danger btn-number" id="decrement">
                                     <i class="fa-solid fa-minus"></i>
                                 </button>
                             </span>
-                            <input type="text" class="form-control input-number" value="1">
+                            <input type="text" class="form-control input-number" value="1" min="1" id="amount">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-success btn-number">
+                                <button type="button" class="btn btn-success btn-number" id="increment">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </span>
@@ -119,7 +119,7 @@
         <!-- Nav Bar -->
         <nav class="navbar bg-primary fixed-bottom p-2">
             <div class="container">
-                <a href="menu.php" class="btn btn-primary" role="button">
+                <a href="main.php" class="btn btn-primary" role="button">
                     <i class="fa-solid fa-house mx-3" style="color: #ffffff;"></i>
                 </a>
                 <a href="cart.php" class="btn btn-primary" role="button">
