@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function saveServedCustomerToDatabase(customer) {
     const formData = new FormData();
-    formData.append("customer_id", customer.id);
     formData.append("name", customer.name);
     formData.append("party_size", customer.partySize);
 
@@ -95,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function deleteServedCustomer(customerId) {
     // Make an AJAX request to delete the served customer
-    fetch(`delete_customer.php?customer_id=${customerId}`)
+    fetch(`delete_customer.php?reservation_id=${customerId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
@@ -136,7 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const formData = new FormData(reservationForm);
 
-    // Use AJAX to submit the form data
     fetch(reservationForm.action, {
       method: "POST",
       body: formData,
@@ -169,11 +167,11 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log("Received data:", data);
         // Assuming data is an array of reservations
-        data.forEach((reservation) => {
+        data.forEach((reservations) => {
           customerQueue.push({
-            id: reservation.customer_id, // Use the actual property from your response
-            name: reservation.name,
-            partySize: reservation.party_size,
+            id: reservations.reservation_id, // Use the actual property from your response
+            name: reservations.name,
+            partySize: reservations.party_size,
           });
         });
 
@@ -200,11 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
         customerQueue = [];
 
         // Assuming data is an array of reservations
-        data.forEach((reservation) => {
+        data.forEach((reservations) => {
           customerQueue.push({
-            id: reservation.customer_id, // Use the actual property from your response
-            name: reservation.name,
-            partySize: reservation.party_size,
+            id: reservations.reservation_id, // Use the actual property from your response
+            name: reservations.name,
+            partySize: reservations.party_size,
           });
         });
 

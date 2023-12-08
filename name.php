@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare and bind the SQL statement
-    $sql = $conn->prepare("INSERT INTO reservation (name, party_size) VALUES (?, ?)");
+    $sql = $conn->prepare("INSERT INTO reservations (name, party_size) VALUES (?, ?)");
     $sql->bind_param("si", $name, $partySize);
 
     // Execute the prepared statement
