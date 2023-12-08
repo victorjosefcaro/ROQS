@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch reservations from the database
-$sql = "SELECT id, name, party_size FROM reservation"; // Include the 'id' column
+$sql = "SELECT customer_id, name, party_size FROM reservation"; // Include the 'id' column
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

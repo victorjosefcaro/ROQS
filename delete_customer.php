@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 $customerId = $_GET['customer_id'];
 
 // Delete the served customer
-$sql = "DELETE FROM reservation WHERE id = $customerId";
+$sql = "DELETE FROM reservation WHERE customer_id = $customerId";
 $result = $conn->query($sql);
 
 // Return a response (e.g., success or error)

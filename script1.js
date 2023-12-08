@@ -9,10 +9,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const tables = [
     { id: 1, status: "available", seats: 2 },
-    { id: 2, status: "occupied", seats: 4 },
+    { id: 2, status: "available", seats: 4 },
     { id: 3, status: "available", seats: 6 },
     // Add more tables as needed
   ];
+
+  // Check if the "makeAvailableButton" is defined before adding the event listener
+  if (makeAvailableButton) {
+    makeAvailableButton.addEventListener("click", function () {
+      // Make the selected table available
+      const tableIdToMakeAvailable = parseInt(
+        prompt("Enter the table number to make available:")
+      );
+
+      const table = tables.find((table) => table.id === tableIdToMakeAvailable);
+
+      if (table) {
+        table.status = "available";
+
+        // Clear the table assignment for the customer who occupied it
+        const customer = customerQueue.find(
+          (customer) => customer.table === tableIdToMakeAvailable
+        );
+        if (customer) {
+          customer.table = null;
+        }
+      }
+
+      // Update the display
+      updateTableStatus();
+      updateQueueDisplay();
+    });
+  }
 
   serveCustomerButton.addEventListener("click", function () {
     if (customerQueue.length > 0) {
@@ -25,14 +53,17 @@ document.addEventListener("DOMContentLoaded", function () {
       if (table) {
         // Assign the table to the customer
         table.status = "occupied";
-        servedCustomer.table = table.id;
+        servedCustomer.table = table.customer_id;
+
+        // Save the served customer to a different table in the database
+        saveServedCustomerToDatabase(servedCustomer);
+
+        // Delete the served customer from the original table
+        deleteServedCustomer(servedCustomer.id);
 
         // Update the display
         updateTableStatus();
         updateQueueDisplay();
-
-        // Delete the served customer from the database
-        deleteServedCustomer(servedCustomer.id); // Add this function call
       } else {
         // Error handling: No suitable table found
         alert("No suitable table found for the customer's party size.");
@@ -43,6 +74,24 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  function saveServedCustomerToDatabase(customer) {
+    const formData = new FormData();
+    formData.append("customer_id", customer.id);
+    formData.append("name", customer.name);
+    formData.append("party_size", customer.partySize);
+
+    // Use AJAX to submit the form data
+    fetch("save_served_customer.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then(handleResponse)
+      .then((data) => {
+        console.log("Served customer saved to database:", data);
+      })
+      .catch(handleError);
+  }
 
   function deleteServedCustomer(customerId) {
     // Make an AJAX request to delete the served customer
@@ -122,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Assuming data is an array of reservations
         data.forEach((reservation) => {
           customerQueue.push({
-            id: reservation.id, // Use the actual property from your response
+            id: reservation.customer_id, // Use the actual property from your response
             name: reservation.name,
             partySize: reservation.party_size,
           });
@@ -153,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Assuming data is an array of reservations
         data.forEach((reservation) => {
           customerQueue.push({
-            id: reservation.id, // Use the actual property from your response
+            id: reservation.customer_id, // Use the actual property from your response
             name: reservation.name,
             partySize: reservation.party_size,
           });
@@ -176,6 +225,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function handleError(error) {
     console.error("Error:", error);
+    alert("An error occurred. Please try again.");
+  }
+
+  function handleNonAjaxError(error) {
+    console.error("Non-AJAX Error:", error);
+    // Perform any necessary actions for non-AJAX errors
     alert("An error occurred. Please try again.");
   }
 
@@ -211,8 +266,28 @@ document.addEventListener("DOMContentLoaded", function () {
         updateQueueDisplay();
       });
 
+      // Include the customer's name if the table is occupied
+      if (table.status === "occupied") {
+        const occupiedCustomer = customerQueue.find(
+          (customer) => customer.table === table.id
+        );
+        if (occupiedCustomer) {
+          // Debugging: Log the occupiedCustomer and tableDiv.innerHTML
+          console.log("Occupied customer:", occupiedCustomer);
+          console.log("Table content before:", tableDiv.innerHTML);
+
+          // Append the customer's name to the table content
+          tableDiv.innerHTML += `<p>Occupied by: ${occupiedCustomer.name}</p>`;
+
+          // Debugging: Log the updated tableDiv.innerHTML
+          console.log("Table content after:", tableDiv.innerHTML);
+        }
+      }
+
       // Add the rest of the table's content
-      tableDiv.innerHTML = `<h2> Table ${table.id}</h2><p>Status: ${table.status}</p><p>Seats: ${table.seats}</p>`;
+      tableDiv.innerHTML += `<h2> Table ${table.id}</h2><p>Status: ${table.status}</p><p>Seats: ${table.seats}</p>`;
+
+      // Append the button
       tableDiv.appendChild(makeAvailableButton);
 
       // Append the table to the container
@@ -222,6 +297,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the table status
   updateTableStatus();
+
+  function deleteTable(tableIdToDelete) {
+    const tableIndex = tables.findIndex(
+      (table) => table.id === tableIdToDelete
+    );
+
+    if (tableIndex !== -1) {
+      // Remove the table from the array
+      tables.splice(tableIndex, 1);
+
+      // Update table IDs
+      updateTableIDs();
+
+      // Update the display
+      updateTableStatus();
+    }
+  }
+
+  document
+    .getElementById("delete-table-button")
+    .addEventListener("click", function () {
+      // Prompt the user to enter the table number to delete
+      const tableIdToDelete = parseInt(
+        prompt("Enter the table number to delete:")
+      );
+
+      // Check if the entered value is a valid number
+      if (!isNaN(tableIdToDelete)) {
+        // Call the deleteTable function
+        deleteTable(tableIdToDelete);
+      } else {
+        handleNonAjaxError(new Error("Invalid table number entered."));
+      }
+    });
 
   // Adding a new table
   document
@@ -237,7 +346,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const maxTableID = Math.max(...tables.map((table) => table.id));
         newTableID = maxTableID + 1;
       } else {
-        alert("Please provide a valid number of seats.");
+        handleNonAjaxError(
+          new Error("Please provide a valid number of seats.")
+        );
         return; // Exit the function early if there's an error
       }
 
@@ -255,31 +366,13 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("new-table-seats").value = "";
     });
 
-  // Check if the "makeAvailableButton" is defined before adding the event listener
-  if (makeAvailableButton) {
-    makeAvailableButton.addEventListener("click", function () {
-      // Make the selected table available
-      const tableIdToMakeAvailable = parseInt(
-        prompt("Enter the table number to make available:")
-      );
-
-      const table = tables.find((table) => table.id === tableIdToMakeAvailable);
-
-      if (table) {
-        table.status = "available";
-
-        // Clear the table assignment for the customer who occupied it
-        const customer = customerQueue.find(
-          (customer) => customer.table === tableIdToMakeAvailable
-        );
-        if (customer) {
-          customer.table = null;
-        }
-      }
-
-      // Update the display
-      updateTableStatus();
-      updateQueueDisplay();
+  function updateTableIDs() {
+    // Update table IDs based on the current order in the array
+    tables.forEach((table, index) => {
+      table.id = index + 1;
     });
   }
+
+  // Initialize the table status
+  updateTableStatus();
 });
