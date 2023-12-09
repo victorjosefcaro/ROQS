@@ -13,11 +13,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Assuming you pass customer ID as a parameter named 'customer_id'
-$customerId = $_GET['customer_id'];
+// Assuming you pass reservation ID as a parameter named 'reservation_id'
+$reservationId = $_GET['reservation_id'];
 
-// Delete the served customer
-$sql = "DELETE FROM reservation WHERE id = $customerId";
+// Delete the served customer from the 'reservations' table
+$sql = "DELETE FROM reservations WHERE reservation_id = $reservationId";
 $result = $conn->query($sql);
 
 // Return a response (e.g., success or error)
