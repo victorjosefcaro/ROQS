@@ -48,6 +48,30 @@ function getCategoryNameFromId(categoryId) {
     }
 }
 
+function placeOrder() {
+    var item_id = $('#modalItemId').text();
+    var item_quantity = $('#amount').val();
+    var item_requests = $('#itemRequests').val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'place_order.php',
+        data: {
+            item_id: item_id,
+            item_quantity: item_quantity,
+            item_requests: item_requests
+        },
+        success: function (response) {
+            // Handle success response if needed
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            // Handle error
+            console.error(error);
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const orderButtons = document.querySelectorAll('.order-btn');
     const incrementButton = document.getElementById('increment');
@@ -61,8 +85,10 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener('click', function () {
             const itemImageBase64 = this.getAttribute('data-item-image');
             const itemName = this.getAttribute('data-item-name');
+            const itemId = this.getAttribute('data-item-id');
             itemPrice = parseFloat(this.getAttribute('data-item-price'));
 
+            document.getElementById('modalItemId').innerText = itemId;
             document.getElementById('modalItemName').innerText = itemName;
             modalItemPrice.innerText = '₱ ' + itemPrice;
 
@@ -78,7 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   
-
     // Increment button functionality
     incrementButton.addEventListener('click', function () {
         amountInput.value = parseInt(amountInput.value) + 1;

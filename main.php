@@ -42,7 +42,7 @@
             include 'db_connection.php';
 
             // Fetch data from the database
-            $sql = "SELECT i.item_name, i.category_id, i.item_description, i.item_price, i.item_image, c.category_name 
+            $sql = "SELECT i.item_id, i.item_name, i.category_id, i.item_description, i.item_price, i.item_image, c.category_name 
             FROM items i
             INNER JOIN categories c 
             ON i.category_id = c.category_id";
@@ -55,8 +55,8 @@
                     $itemImageBase64 = base64_encode($row["item_image"]);
 
                     echo '
-                        <div class="flex-column pb-3">
-                            <div class="card mx-2 shadow-sm" style="width: 18rem; height: 500px;">
+                        <div class="flex-column pb-5">
+                            <div class="card mx-2 shadow-sm" style="width: 18rem; min-height: 530px;">
                                 <img src="data:image/jpeg;base64,' . base64_encode($row["item_image"]) . '" class="card-img-top">
                                 <div class="card-body">
                                     <h1 class="card-title">' . $row["item_name"] . '</h1>
@@ -65,8 +65,8 @@
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
                                     <h1>₱ ' . $row["item_price"] . '</h1>
-                                    <button type="button" class="btn btn-primary order-btn" 
-                                        data-bs-toggle="modal" data-bs-target="#orderModal" 
+                                    <button type="button" class="btn btn-primary order-btn" data-bs-toggle="modal" data-bs-target="#orderModal" 
+                                        data-item-id="' . $row["item_id"] . '"
                                         data-item-image="' . $itemImageBase64 . '"
                                         data-item-name="' . $row["item_name"] . '"
                                         data-item-price="' . $row["item_price"] . '"
@@ -90,6 +90,7 @@
                     </div>
                     <div class="modal-body">
                         <img id="modalItemImage" class="card-img-top" src="" alt="Item Image">
+                        <p id="modalItemId" class="visually-hidden"></p>
                         <h1 class="modal-title pt-2" id="modalItemName"></h1>
                         <div class="input-group px-4 py-2 w-50 mx-auto">
                             <span class="input-group-btn">
@@ -111,7 +112,7 @@
                         <h1 id="modalItemPrice"></h1>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Place Order</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="placeOrder()">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -126,7 +127,23 @@
                     <i class="fa-solid fa-cart-shopping mx-3" style="color: #ffffff;"></i>
                     <span class="position-relative">
                         <span class="badge bg-danger rounded position-absolute top-0 start-100 translate-middle">
-                            99+
+                            <?php
+                                // Include the database connection file
+                                include 'db_connection.php';
+
+                                // Query to count rows
+                                $sql = "SELECT COUNT(order_detail_id) AS row_count FROM order_details";
+                                $result = $conn->query($sql);
+
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $count = $row["row_count"];
+                                    // Display the badge with the dynamic count
+                                    echo $count;
+                                } else {
+                                    echo "0 rows";
+                                }
+                            ?>
                         </span>
                     </span>
                 </a>
@@ -136,6 +153,7 @@
             </div>
         </nav>
         
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous"></script>
         <script src="main.js"></script>
