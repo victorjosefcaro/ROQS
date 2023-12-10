@@ -9,8 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const tables = [
     { id: 1, status: "available", seats: 2 },
-    { id: 2, status: "available", seats: 4 },
-    { id: 3, status: "available", seats: 6 },
+    { id: 2, status: "available", seats: 2 },
+    { id: 3, status: "available", seats: 4 },
+    { id: 4, status: "available", seats: 4 },
+    { id: 5, status: "available", seats: 6 },
+    { id: 6, status: "available", seats: 6 },
     // Add more tables as needed
   ];
 
