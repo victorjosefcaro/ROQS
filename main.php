@@ -6,8 +6,27 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
     </head>
     <body>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous"></script>
+        <script src="main.js"></script>
         <!-- Header -->
         <h1 class="text-center py-3">Menu</h1>
+        <?php
+            // Include the database connection file
+            include 'db_connection.php';
+
+            // Fetch data from the database
+            $sql = "SELECT customer_id, customer_name FROM customers";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                // Output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    echo "<h2 class='m-3'>Hello " . $row["customer_name"] . "<br></h2>";
+                }
+            }
+        ?>
         <!-- Search Bar-->
         <div class="input-group mb-3 px-3">
             <input type="text" class="form-control" placeholder="Search" oninput="searchItems()">
@@ -20,19 +39,19 @@
             <input type="radio" class="btn-check" name="options-outlined" id="1" onclick="filterItems('All')" checked>
             <label class="btn btn-outline-secondary mx-1" for="1">All</label>
 
-            <input type="radio" class="btn-check" name="options-outlined" id="2" onclick="filterItems('Appetizer')">
+            <input type="radio" class="btn-check" name="options-outlined" id="2" onclick="filterItems('appetizer')">
             <label class="btn btn-outline-secondary mx-1" for="2">Appetizers</label>
 
-            <input type="radio" class="btn-check" name="options-outlined" id="3" onclick="filterItems('Entree')">
+            <input type="radio" class="btn-check" name="options-outlined" id="3" onclick="filterItems('entrees')">
             <label class="btn btn-outline-secondary mx-1" for="3">Entrees</label>
 
-            <input type="radio" class="btn-check" name="options-outlined" id="4" onclick="filterItems('Side')">
+            <input type="radio" class="btn-check" name="options-outlined" id="4" onclick="filterItems('sides')">
             <label class="btn btn-outline-secondary mx-1" for="4">Sides</label>
 
-            <input type="radio" class="btn-check" name="options-outlined" id="5" onclick="filterItems('Dessert')">
+            <input type="radio" class="btn-check" name="options-outlined" id="5" onclick="filterItems('desserts')">
             <label class="btn btn-outline-secondary mx-1" for="5">Desserts</label>
 
-            <input type="radio" class="btn-check" name="options-outlined" id="6" onclick="filterItems('Beverage')">
+            <input type="radio" class="btn-check" name="options-outlined" id="6" onclick="filterItems('beverages')">
             <label class="btn btn-outline-secondary mx-1" for="6">Beverages</label>
         </div>
         <!-- Items -->
@@ -42,34 +61,31 @@
             include 'db_connection.php';
 
             // Fetch data from the database
-            $sql = "SELECT i.item_id, i.item_name, i.category_id, i.item_description, i.item_price, i.item_image, c.category_name 
-            FROM items i
-            INNER JOIN categories c 
-            ON i.category_id = c.category_id";
+            $sql = "SELECT p.product_id, p.product_name, p.category_id, p.product_desc, p.price, p.product_image, c.category_name 
+            FROM product p
+            INNER JOIN category c
+            ON p.category_id = c.category_id";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
                 // Output data of each row
                 while ($row = $result->fetch_assoc()) {
-                    // Encode the item image to base64
-                    $itemImageBase64 = base64_encode($row["item_image"]);
-
                     echo '
                         <div class="flex-column pb-5">
                             <div class="card mx-2 shadow-sm" style="width: 18rem; min-height: 530px;">
-                                <img src="data:image/jpeg;base64,' . base64_encode($row["item_image"]) . '" class="card-img-top">
+                                <img src="' . $row["product_image"] . '" class="card-img-top">
                                 <div class="card-body">
-                                    <h1 class="card-title">' . $row["item_name"] . '</h1>
+                                    <h1 class="card-title">' . $row["product_name"] . '</h1>
                                     <h5 class="card-title">' . $row["category_name"] . '</h5>
-                                    <p class="card-text">' . $row["item_description"] . '</p>
+                                    <p class="card-text">' . $row["product_desc"] . '</p>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <h1>₱ ' . $row["item_price"] . '</h1>
-                                    <button type="button" class="btn btn-primary order-btn" data-bs-toggle="modal" data-bs-target="#orderModal" 
-                                        data-item-id="' . $row["item_id"] . '"
-                                        data-item-image="' . $itemImageBase64 . '"
-                                        data-item-name="' . $row["item_name"] . '"
-                                        data-item-price="' . $row["item_price"] . '"
+                                    <h1>₱ ' . $row["price"] . '</h1>
+                                    <button type="button" class="btn btn-primary order-btn" data-bs-toggle="modal" data-bs-target="#orderModal"
+                                        data-item-id="' . $row["product_id"] . '"
+                                        data-item-image="' . $row["product_image"] . '"
+                                        data-item-name="' . $row["product_name"] . '"
+                                        data-item-price="' . $row["price"] . '"
                                     >Order</button>
                                 </div>
                             </div>
@@ -89,7 +105,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <img id="modalItemImage" class="card-img-top" src="" alt="Item Image">
                         <p id="modalItemId" class="visually-hidden"></p>
                         <h1 class="modal-title pt-2" id="modalItemName"></h1>
                         <div class="input-group px-4 py-2 w-50 mx-auto">
@@ -114,6 +129,25 @@
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="placeOrder()">Place Order</button>
                     </div>
+                    <?php
+                        // Include the database connection file
+                        include 'db_connection.php';
+
+                        // Fetch data from the database
+                        $sql = "SELECT customer_id, customer_name FROM customers";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            // Output data of each row
+                            while ($row = $result->fetch_assoc()) {
+                                // Store customer_id in a variable
+                                $customer_id = $row['customer_id'];
+            
+                                // Output a hidden input with customer_id
+                                echo '<input type="hidden" id="customerId" value="' . $customer_id . '">';
+                            }
+                        }
+                    ?>
                 </div>
             </div>
         </div>
@@ -132,7 +166,7 @@
                                 include 'db_connection.php';
 
                                 // Query to count rows
-                                $sql = "SELECT COUNT(order_detail_id) AS row_count FROM order_details";
+                                $sql = "SELECT COUNT(customer_id) AS row_count FROM cart";
                                 $result = $conn->query($sql);
 
                                 if ($result->num_rows > 0) {
@@ -147,15 +181,7 @@
                         </span>
                     </span>
                 </a>
-                <a href="status.php" class="btn btn-primary" role="button">
-                    <i class="fa-solid fa-clock mx-3" style="color: #ffffff;"></i>
-                </a>
             </div>
         </nav>
-        
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous"></script>
-        <script src="main.js"></script>
     </body>
 </html>

@@ -2,13 +2,14 @@
 include("db_connection.php");
 
 // Retrieve data sent from AJAX
-$item_id = $_POST['item_id'];
-$item_quantity = $_POST['item_quantity'];
-$item_requests = $_POST['item_requests'];
+$customer_id = $_POST['customer_id'];
+$variation_id = $_POST['variation_id'];
+$quantity = $_POST['quantity'];
+$requests = $_POST['requests'];
 
 // Prepare and execute the SQL query
-$sql = "INSERT INTO order_details (item_id, item_quantity, item_requests)
-VALUES ('$item_id', '$item_quantity', '$item_requests')";
+$sql = "INSERT INTO cart (customer_id, variation_id, quantity, requests)
+VALUES ('$customer_id', '$variation_id', '$quantity', '$requests')";
 
 if ($conn->query($sql) === TRUE) {
     echo "Order placed successfully!";

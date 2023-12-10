@@ -6,6 +6,10 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
     </head>
     <body>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous"></script>
+        <script src="cart.js"></script>
         <!-- Header -->
         <h1 class="text-center py-3">Cart</h1>
         <!-- Items -->
@@ -14,10 +18,12 @@
             include 'db_connection.php';
 
             // Fetch data from the database
-            $sql = "SELECT d.item_id, d.item_quantity, d.item_requests, i.item_name, i.item_price, (d.item_quantity * i.item_price) AS total_price
-            FROM order_details d
-            INNER JOIN items i
-            ON d.item_id = i.item_id";
+            $sql = "SELECT c.variation_id, p.product_id, c.quantity, c.requests, p.product_name, p.price, (c.quantity * p.price) AS total_price
+            FROM cart c
+            INNER JOIN product_size_variation v
+            ON c.variation_id = v.variation_id
+            INNER JOIN product p
+            ON v.product_id = p.product_id";
             $result = $conn->query($sql);
 
             $totalPriceOfOrders = 0; // Initialize total price variable
@@ -30,26 +36,26 @@
                             <div class="card-body">
                                 <div class="row pb-1">
                                     <div class="col-8">
-                                        <h5>' . $row["item_name"] . '</h5>
+                                        <h5>' . $row["product_name"] . '</h5>
                                     </div>
                                     <div class="col-4">
                                         <div class="container d-flex ps-4">
                                             <button type="button" class="btn btn-sm btn-secondary order-btn" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                data-item-id="'. $row['item_id'] . '"
-                                                data-item-name="' . $row["item_name"] . '"
-                                                data-item-price="' . $row["item_price"] . '"
-                                                data-item-quantity="' . $row["item_quantity"] . '"
-                                                data-item-requests="' . $row["item_requests"] . '"
+                                                data-item-id="'. $row['variation_id'] . '"
+                                                data-item-name="' . $row["product_name"] . '"
+                                                data-item-price="' . $row["price"] . '"
+                                                data-item-quantity="' . $row["quantity"] . '"
+                                                data-item-requests="' . $row["requests"] . '"
                                             ><i class="fa-solid fa-edit fa-xs"></i></button>
                                             <button type="button" class="btn btn-sm btn-danger ms-1" id="delete"
-                                                data-item-id="'. $row['item_id'] . '"
+                                                data-variation-id="'. $row['variation_id'] . '"
                                             >
                                                 <i class="fa-solid fa-trash fa-xs"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="fs-4">Amount: ' . $row["item_quantity"] . '</p>
+                                <p class="fs-4">Amount: ' . $row["quantity"] . '</p>
                                 <p class="fs-4">₱ ' . $row["total_price"] . '</p>
                             </div>
                         </div>';
@@ -121,7 +127,7 @@
                                 include 'db_connection.php';
 
                                 // Query to count rows
-                                $sql = "SELECT COUNT(order_detail_id) AS row_count FROM order_details";
+                                $sql = "SELECT COUNT(customer_id) AS row_count FROM cart";
                                 $result = $conn->query($sql);
 
                                 if ($result->num_rows > 0) {
@@ -136,15 +142,7 @@
                         </span>
                     </span>
                 </a>
-                <a href="status.php" class="btn btn-primary" role="button">
-                    <i class="fa-solid fa-clock mx-3" style="color: #ffffff;"></i>
-                </a>
             </div>
         </nav>
-        
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous"></script>
-        <script src="cart.js"></script>
     </body>
 </html>
