@@ -28,11 +28,15 @@ body {
   padding: 1rem;
 }
 
+h1 {
+  margin-top: 5rem;
+}
+
 .container label {
   margin: 1rem;
 }
 
-.container input {
+form input {
   width: 30%;
   height: 2rem;
   text-align: center;
@@ -72,7 +76,8 @@ body {
   font-size: 1.5rem; /* Increase the font size for a bigger button */
   margin: 1.5rem 1rem; /* Add space around the button */
   transition: background-color 0.3s, transform 0.2s;
-  max-width: 200px; /* Limit the maximum width of the button */
+  width: 8rem;
+  height: 3rem;
   display: block; /* Make the button a block element to limit its width */
   margin: 0 auto; /* Center the button horizontally */
 }
