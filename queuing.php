@@ -9,6 +9,7 @@
     />
     <link rel="stylesheet" href="queuing.css" />
     <title>Queue Management</title>
+    <script src="script1.js"></script>
   </head>
   <body>
     <div class="container1">
@@ -44,9 +45,9 @@
       <div class="queue">
         <ul id="customer-queue"></ul>
       </div>
-      <button id="serve-customer-button">Serve Next Customer</button>
+      <button id="serve-customer-button">
+        Serve Next Customer
+      </button>
     </div>
-
-    <script src="script1.js"></script>
   </body>
 </html>
