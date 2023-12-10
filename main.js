@@ -34,32 +34,34 @@ function getCategoryNameFromId(categoryId) {
         case '1':
             return 'All';
         case '2':
-            return 'Appetizer';
-        case '3':
-            return 'Entree';
-        case '4':
-            return 'Side';
-        case '5':
-            return 'Dessert';
-        case '6':
-            return 'Beverage';
+            return 'appetizer';
+        case '8':
+            return 'entrees';
+        case '9':
+            return 'sides';
+        case '14':
+            return 'desserts';
+        case '15':
+            return 'beverages';
         default:
             return '';
     }
 }
 
 function placeOrder() {
-    var item_id = $('#modalItemId').text();
-    var item_quantity = $('#amount').val();
-    var item_requests = $('#itemRequests').val();
-
+    var customer_id = $('#customerId').val();
+    var variation_id = $('#modalItemId').text();
+    var quantity = $('#amount').val();
+    var requests = $('#itemRequests').val();
+ 
     $.ajax({
         type: 'POST',
         url: 'place_order.php',
         data: {
-            item_id: item_id,
-            item_quantity: item_quantity,
-            item_requests: item_requests
+            variation_id: variation_id,
+            quantity: quantity,
+            customer_id: customer_id,
+            requests: requests,
         },
         success: function (response) {
             // Handle success response if needed
@@ -83,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     orderButtons.forEach((button) => {
         button.addEventListener('click', function () {
-            const itemImageBase64 = this.getAttribute('data-item-image');
             const itemName = this.getAttribute('data-item-name');
             const itemId = this.getAttribute('data-item-id');
             itemPrice = parseFloat(this.getAttribute('data-item-price'));
@@ -97,10 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('modalItemPrice').innerText = itemName;
             document.getElementById('modalItemName').innerText = itemName;
             document.getElementById('modalItemPrice').innerText = '₱ ' + itemPrice;
-
-            const modalItemImage = document.getElementById('modalItemImage');
-            modalItemImage.src = 'data:image/jpeg;base64,' + itemImageBase64;
-            modalItemImage.alt = itemName + ' Image';
         });
     });
   

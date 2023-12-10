@@ -1,19 +1,19 @@
 function editOrder() {
-    var item_id = $('#modalItemId').text();
-    var item_quantity = $('#amount').val();
-    var item_requests = $('#itemRequests').val();
+    var variation_id = $('#modalItemId').text();
+    var quantity = $('#amount').val();
+    var requests = $('#itemRequests').val();
 
     $.ajax({
         type: 'POST',
         url: 'edit_order.php',
         data: {
-            item_id: item_id,
-            item_quantity: item_quantity,
-            item_requests: item_requests
+            variation_id: variation_id,
+            quantity: quantity,
+            requests: requests
         },
         success: function (response) {
             // Handle success response if needed
-            console.log(response);
+            console.log(response);  
         },
         error: function (xhr, status, error) {
             // Handle error
