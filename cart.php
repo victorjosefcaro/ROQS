@@ -20,11 +20,13 @@
             ON d.item_id = i.item_id";
             $result = $conn->query($sql);
 
+            $totalPriceOfOrders = 0; // Initialize total price variable
+
             if ($result->num_rows > 0) {
                 // Output data of each row
                 while ($row = $result->fetch_assoc()) {
                     echo '
-                        <div class="card m-2 shadow-sm">
+                        <div class="card m-2 shadow-sm" style="max-height: 150px;">
                             <div class="card-body">
                                 <div class="row pb-1">
                                     <div class="col-8">
@@ -51,10 +53,22 @@
                                 <p class="fs-4">₱ ' . $row["total_price"] . '</p>
                             </div>
                         </div>';
+                    // Calculate total price for each item and add to the total price
+                    $totalPriceOfOrders += $row["total_price"];
                 }
             } else {
-                echo "0 results";
+                echo '
+                    <p class="fs-2 pt-5 text-center">Cart is empty</p>
+                ';
             }
+            // Display the total price of all orders
+            echo '
+            <hr class="mx-3">
+            <div class="m-3 mb-5 d-flex justify-content-between">
+                <h4>Total: ₱ ' . number_format($totalPriceOfOrders, 2) . '</h4>
+                <button type="button" class="btn btn-primary">Place Orders</button>
+            </div>
+            <hr class="mx-3" mb-5>';
         ?>
         <!-- Edit Modal -->
         <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
