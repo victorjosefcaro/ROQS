@@ -4,16 +4,12 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100&display=swap"
-            rel="stylesheet"
-        />
     </head>
     <body>
         <!-- Queue Table -->
         <div class="container mt-5">
             <h2 class="pb-3">Queue</h2>
-            <div class="container m-3 d-flex">
+            <div class="container p-3 overflow-auto d-flex flex-nowrap" role="group">
                 <?php
                 include 'db_connection.php';
 
@@ -25,31 +21,31 @@
                         $tableId = $row["table_id"];
                         $cardClass = ($row["table_status"] === 'Occupied') ? 'bg-danger' : '';
                         echo '
-                            <div class="card mx-2 shadow-sm ' . $cardClass . '" style="width: 12rem;">
-                                <a href="delete_table.php?id=' . $row["table_id"] . '" class="btn btn-danger btn-sm delete-table position-absolute top-0 end-0 mt-2 me-2">
-                                    <i class="fa-solid fa-times"></i>
-                                </a>
-                                <div class="card-body text-center">
-                                    <h4 class="card-title mb-4">Table ' . $row["table_id"] . '</h4>
-                                    <p class="card-title">Status: ' . $row["table_status"] . '</p>
-                                    <p class="card-title">Seats: ' . $row["table_size"] . '</p>
-                                    <button type="button" class="btn btn-primary btn-sm make-available" data-table-id="' . $tableId . '">
-                                        Make table available
-                                    </button>
+                            <div class="flex-column">
+                                <div class="card mx-2 shadow-sm ' . $cardClass . '" style="width: 12rem;">
+                                    <a href="delete_table.php?id=' . $row["table_id"] . '" class="btn btn-danger btn-sm delete-table position-absolute top-0 end-0 mt-2 me-2">
+                                        <i class="fa-solid fa-times"></i>
+                                    </a>
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title mb-4">Table ' . $row["table_id"] . '</h4>
+                                        <p class="card-title">Status: ' . $row["table_status"] . '</p>
+                                        <p class="card-title">Seats: ' . $row["table_size"] . '</p>
+                                        <button type="button" class="btn btn-primary btn-sm make-available" data-table-id="' . $tableId . '">
+                                            Make table available
+                                        </button>
+                                    </div>
                                 </div>
                             </div>';
                     }
                 }
                 ?>
             </div>
-            <div class="container d-flex mb-3">
-                <form action="add_table.php" method="POST">
-                    <div class="input-group">
-                        <input type="text" class="form-control" style="max-width: 8rem;" placeholder="No. of seats" name="table_size">
-                        <button type="submit" class="btn btn-success">Add Table</button>
-                    </div>
-                </form>
-            </div>  
+            <form action="add_table.php" method="POST" class="my-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" style="max-width: 8rem;" placeholder="No. of seats" name="table_size">
+                    <button type="submit" class="btn btn-success">Add Table</button>
+                </div>
+            </form> 
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -111,7 +107,8 @@
                         console.error(error);
                     }
                 });
-            });
+            })
+        })
         </script>
     </body>
 </html>

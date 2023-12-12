@@ -18,6 +18,13 @@
                 $order_id = $_POST['order_id'];
                 $update_query = "UPDATE orders SET order_status = 'Served' WHERE order_id = $order_id AND order_status = 'Pending'";
                 $conn->query($update_query);
+
+                // Subtract item quantity from inventory
+                $update_inventory_query = "UPDATE inventory AS inv
+                                           INNER JOIN order_details AS od ON inv.item_id = od.item_id
+                                           SET inv.item_stock = inv.item_stock - od.item_quantity
+                                           WHERE od.order_id = $order_id";
+                $conn->query($update_inventory_query);
             }
 
             // Query to fetch data from the database

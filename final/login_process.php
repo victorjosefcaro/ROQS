@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // SQL query to fetch the hashed password for the provided username
-    $query = "SELECT user_password FROM users WHERE username='$username'";
+    $query = "SELECT user_password, user_type FROM users WHERE username='$username'";
 
     // Perform the query
     $result = mysqli_query($conn, $query);
@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $hashed_password)) {
                 // Password matches, redirect to staff_index.php
                 $_SESSION['username'] = $username;
+                $_SESSION['user_type'] = $row['user_type'];
                 header("Location: staff_index.php");
                 exit();
             } else {

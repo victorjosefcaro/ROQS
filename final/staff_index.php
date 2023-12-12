@@ -37,9 +37,10 @@
             // Start the session
             session_start();
 
-            // Check if the username is set in the session
-            if (isset($_SESSION['username'])) {
+            // Check if the username and user_type are set in the session
+            if (isset($_SESSION['username']) && isset($_SESSION['user_type'])) {
                 $username = $_SESSION['username'];
+                $user_type = $_SESSION['user_type'];
                 echo '<div class="container mt-5">
                     <h1>
                     Hello, ' . htmlspecialchars($username) . '

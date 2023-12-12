@@ -22,10 +22,10 @@ include 'db_connection.php';
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            function checkStatus() {
+            function checkCustomerStatus() {
                 // AJAX call to check the customer_status
                 $.ajax({
-                    url: 'check_status.php',
+                    url: 'check_customer_status.php',
                     type: 'GET',
                     success: function (response) {
                         if (response === 'True') {
@@ -36,7 +36,7 @@ include 'db_connection.php';
             }
 
             // Check the status every 5 seconds
-            setInterval(checkStatus, 5000);
+            setInterval(checkCustomerStatus, 5000);
         });
     </script>
 </head>
