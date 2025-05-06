@@ -5,13 +5,13 @@ ROQS (Restaurant Ordering and Queuing System) is a web-based application designe
 ## 🖼️ Screenshots
 
 ### Table Management
-![Table Management](screenshots/6.png)
+![Table Management](assets/images/6.png)
 
 ### Menu
-![Menu](screenshots/7.png)
+![Menu](assets/images/7.png)
 
 ### Admin Dashboard
-![Admin Dashboard](screenshots/2.png)
+![Admin Dashboard](assets/images/2.png)
 
 ## ✨ Features
 
